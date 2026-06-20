@@ -6,6 +6,7 @@ const {
   REST,
   Routes,
   SlashCommandBuilder,
+  MessageFlags,
 } = require("discord.js");
 
 const {
@@ -157,7 +158,7 @@ client.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   if (interaction.commandName === "join") {
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
     const joined = await joinPermanentVoice();
 
@@ -172,9 +173,9 @@ client.on("interactionCreate", async (interaction) => {
     const left = leaveVoice();
 
     if (left) {
-      await interaction.reply({ content: "AFK Bot left the voice channel.", ephemeral: true });
+      await interaction.reply({ content: "AFK Bot left the voice channel.", flags: MessageFlags.Ephemeral });
     } else {
-      await interaction.reply({ content: "AFK Bot is not connected to a voice channel.", ephemeral: true });
+      await interaction.reply({ content: "AFK Bot is not connected to a voice channel.", flags: MessageFlags.Ephemeral });
     }
   }
 
@@ -182,13 +183,13 @@ client.on("interactionCreate", async (interaction) => {
     const connection = getVoiceConnection(GUILD_ID);
 
     if (!connection) {
-      await interaction.reply({ content: "AFK Bot is online but not connected to voice.", ephemeral: true });
+      await interaction.reply({ content: "AFK Bot is online but not connected to voice.", flags: MessageFlags.Ephemeral });
       return;
     }
 
     await interaction.reply({
       content: `AFK Bot voice status: ${connection.state.status}`,
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     });
   }
 });
